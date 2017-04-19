@@ -2,7 +2,7 @@
   "name": "css-size",
   "version": "1.1.0",
   "description": "Compare the compressed and uncompressed sizes of a CSS file before and after processing.",
-  "main": "dist/index.js",
+  "main": "index.js",
   "bin": {
     "css-size": "dist/cli.js"
   },
@@ -16,6 +16,7 @@
   },
   "files": [
     "LICENSE-MIT",
+    "index.js",
     "dist",
     "usage.txt"
   ],
