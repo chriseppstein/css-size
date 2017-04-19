@@ -82,20 +82,34 @@ cssSize.table(css, nanoOpts, process).then(function (table) {
 
 ## API
 
-### `cssSize(cssProcessor, input, options)`
+### `cssSize(input, options, processor)`
 
-Pass a string (or Buffer) of CSS to receive an object with information about the original &
-minified sizes (uncompressed, gzipped, and brotli'd), plus difference and percentage results. The
-options object is passed through to the processor should you wish to compare sizes
-using different options than the defaults.
+Pass `input` of CSS to receive an object with information about the
+original & minified sizes (uncompressed, gzipped, and brotli'd), plus
+difference and percentage results. The `options` object is passed
+through to the `processor` should you wish to compare sizes using
+different options than the defaults.
 
-### `cssSize.table(cssProcessor, input, options)`
+### `cssSize.table(input, options, processor)`
 
 Use the table method instead to receive the results as a formatted table.
 
 #### input
 
 Type: `string`, `buffer`
+
+#### options
+
+Type: object
+
+#### processor
+
+Type: function
+
+The processor accepts as arguments the input and options and returns a
+Promise that resolves to an object with a `css` property containing the
+processed css output.
+
 
 ### CLI
 
