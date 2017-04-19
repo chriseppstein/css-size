@@ -7,7 +7,7 @@ Options:
     --processor,  -p    Path to the postcss processor code.
 
     --options           Pass through options to the postcss plugin. For example,
-                        you can turn off unused rule removal
+                        if using cssnano, you can turn off unused rule removal
                         with `--no-options.discardUnused`.
 
     --help,       -h    Outputs this help screen.
@@ -22,5 +22,5 @@ Example:
     var mypostcssplugin = require('mypostcssplugin');
     module.exports = function(css, opts) {
       var plugin = mypostcssplugin(opts);
-      return postcss([plugin]).process(css, opts);
+      return postcss([plugin]).process(css);
     }
