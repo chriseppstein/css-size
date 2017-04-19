@@ -6,11 +6,13 @@
   "bin": {
     "css-size": "dist/cli.js"
   },
+  "engines": {
+    "node": ">=4"
+  },
   "scripts": {
     "pretest": "eslint src",
     "prepublish": "del-cli dist && BABEL_ENV=publish babel src --out-dir dist --ignore /__tests__/",
     "test": "npm run prepublish && ava src/__tests__",
-    "test-012": "npm run prepublish && ava src/__tests__"
   },
   "files": [
     "LICENSE-MIT",
