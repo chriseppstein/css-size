@@ -3,6 +3,7 @@ import {sync as gzip} from 'gzip-size';
 import {sync as brotli} from 'brotli-size';
 import Table from 'cli-table';
 import round from 'round-precision';
+import nano from 'cssnano';
 
 const getBinarySize = (string) => {
     return Buffer.byteLength(string, 'utf8');
@@ -12,9 +13,10 @@ const percentDifference = (original, minified) => {
     return round((minified / original) * 100, 2) + '%';
 };
 
-const cssSize = (cssCallback, css, opts) => {
+const cssSize = (css, opts, processor) => {
+    processor = processor || nano.process.bind(nano);
     css = css.toString();
-    return cssCallback(css, opts).then(result => {
+    return processor(css, opts).then(result => {
         let originalUncompressed = getBinarySize(css);
         let minifiedUncompressed = getBinarySize(result.css);
 
@@ -71,8 +73,8 @@ const tableize = (data) => {
     };
 };
 
-export function table (css, opts) {
-    return cssSize(css, opts).then(data => {
+export function table (css, opts, processor) {
+    return cssSize(css, opts, processor).then(data => {
         let result = tableize(data);
         let output = new Table({head: result.head});
         output.push.apply(output, result.rows);

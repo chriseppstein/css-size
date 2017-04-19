@@ -3,7 +3,6 @@ import {spawn} from 'child_process';
 import path from 'path';
 import test from 'ava';
 import size from '../';
-import nanoProcessor from '../../processors/nano.js';
 
 let noopProcessorPath = path.resolve(__dirname, '../../processors/noop.js');
 
@@ -49,7 +48,7 @@ test('cli with processor argument', t => {
 });
 
 test('api', t => {
-    return size(nanoProcessor, read('test.css', 'utf-8')).then(result => {
+    return size(read('test.css', 'utf-8')).then(result => {
         t.deepEqual(result, {
             uncompressed: {
                 original: '23 B',
@@ -75,7 +74,6 @@ test('api', t => {
 
 test('api options', t => {
     return size(
-        nanoProcessor,
         '@namespace islands url("http://bar.yandex.ru/ui/islands");', {
             discardUnused: false,
         }

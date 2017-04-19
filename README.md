@@ -24,16 +24,19 @@ npm install css-size --save
 ## Example
 
 ```js
+var postcss = require('postcss');
+var autoprefixer = require('autoprefixer');
 var nano = require('cssnano');
 var css = 'h1 {\n  color: black;\n}\n';
 var nanoOpts = {};
+var cssSize = require("css-size");
 
-function processWithNano(css, options) {
-  return nano.process(css, options);
+function process(css, options) {
+  return postcss([ autoprefixer, nano(options) ]).process(css);
 }
 
 
-cssSize(processWithNano, css, nanoOpts).then(function (results) {
+cssSize(css, nanoOpts, process).then(function (results) {
     console.log(results);
 
 /*
@@ -56,7 +59,7 @@ cssSize(processWithNano, css, nanoOpts).then(function (results) {
 
 });
 
-cssSize.table(processWithNano, css, nanoOpts).then(function (table) {
+cssSize.table(css, nanoOpts, process).then(function (table) {
     console.log(table);
 
 /*
