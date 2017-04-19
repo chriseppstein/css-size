@@ -3,6 +3,7 @@
 import fs from 'fs';
 import process from 'process';
 import path from 'path';
+import nano from 'cssnano';
 import read from 'read-file-stdin';
 import minimist from 'minimist';
 import {table} from './';
@@ -21,7 +22,7 @@ if (opts.version) {
 } else {
     let file = opts._[0];
 
-    if (file === 'help' || opts.help || !opts.processor) {
+    if (file === 'help' || opts.help) {
         fs.createReadStream(__dirname + '/../usage.txt')
             .pipe(process.stdout)
             .on('close', () => process.exit(1));
@@ -30,7 +31,10 @@ if (opts.version) {
             if (err) {
                 throw err;
             }
-            let processor = require(path.resolve(process.cwd(), opts.processor));
+            let processor = nano.process.bind(nano);
+            if (opts.processor) {
+                processor = require(path.resolve(process.cwd(), opts.processor));
+            }
             table(processor, buf, opts.options).then((results) => console.log(results));
         });
     }

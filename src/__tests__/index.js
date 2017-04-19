@@ -5,14 +5,14 @@ import test from 'ava';
 import size from '../';
 import nanoProcessor from '../../processors/nano.js';
 
+let noopProcessorPath = path.resolve(__dirname, '../../processors/noop.js');
+
 function setup (args) {
     return new Promise((resolve, reject) => {
         process.chdir(__dirname);
 
         let ps = spawn(process.execPath, [
             path.resolve(__dirname, '../../dist/cli.js'),
-            '-p',
-            path.resolve(__dirname, '../../processors/nano.js'),
         ].concat(args));
 
         let out = '';
@@ -37,6 +37,14 @@ test('cli', t => {
         t.truthy(~out.indexOf('34 B'));
         t.truthy(~out.indexOf('9 B'));
         t.truthy(~out.indexOf('79.07%'));
+    });
+});
+
+test('cli with processor argument', t => {
+    console.log(noopProcessorPath);
+    return setup(['-p', noopProcessorPath, 'test.css']).then(results => {
+        let out = results[0];
+        t.truthy(~out.indexOf('100%'));
     });
 });
 
