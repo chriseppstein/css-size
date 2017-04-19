@@ -7,7 +7,9 @@ and brotli. For most users, one of the compressed sizes will best
 represent what will be served to a client in production. It also
 provides a better comparison between the minified and the original CSS.
 
-CSS is expected to processed by [`postcss`] plugins.
+CSS is expected to processed by [`postcss`] plugins but can be used with
+any processing code that returns a promise that resolves to an object
+with a `css` property.
 
 
 ## Install
@@ -79,7 +81,7 @@ cssSize.table(processWithNano, css, nanoOpts).then(function (table) {
 
 ### `cssSize(cssProcessor, input, options)`
 
-Pass a string of CSS to receive an object with information about the original &
+Pass a string (or Buffer) of CSS to receive an object with information about the original &
 minified sizes (uncompressed, gzipped, and brotli'd), plus difference and percentage results. The
 options object is passed through to the processor should you wish to compare sizes
 using different options than the defaults.
