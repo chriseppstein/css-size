@@ -4,6 +4,8 @@ import path from 'path';
 import test from 'ava';
 import size from '../';
 
+let noopProcessorPath = path.resolve(__dirname, '../../processors/noop.js');
+
 function setup (args) {
     return new Promise((resolve, reject) => {
         process.chdir(__dirname);
@@ -37,12 +39,36 @@ test('cli', t => {
     });
 });
 
+test('cli with processor argument', t => {
+    console.log(noopProcessorPath);
+    return setup(['-p', noopProcessorPath, 'test.css']).then(results => {
+        let out = results[0];
+        t.truthy(~out.indexOf('100%'));
+    });
+});
+
 test('api', t => {
     return size(read('test.css', 'utf-8')).then(result => {
-        t.deepEqual(result.original, '43 B');
-        t.deepEqual(result.minified, '34 B');
-        t.deepEqual(result.difference, '9 B');
-        t.deepEqual(result.percent, '79.07%');
+        t.deepEqual(result, {
+            uncompressed: {
+                original: '23 B',
+                processed: '14 B',
+                difference: '9 B',
+                percent: '60.87%',
+            },
+            gzip: {
+                original: '43 B',
+                processed: '34 B',
+                difference: '9 B',
+                percent: '79.07%',
+            },
+            brotli: {
+                original: '27 B',
+                processed: '16 B',
+                difference: '11 B',
+                percent: '59.26%',
+            },
+        });
     });
 });
 
@@ -52,6 +78,6 @@ test('api options', t => {
             discardUnused: false,
         }
     ).then(result => {
-        t.deepEqual(result.minified, '67 B');
+        t.deepEqual(result.gzip.processed, "67 B");
     });
 });

@@ -1,19 +1,22 @@
 {
   "name": "css-size",
   "version": "1.1.0",
-  "description": "Display the size of a CSS file.",
-  "main": "dist/index.js",
+  "description": "Compare the compressed and uncompressed sizes of a CSS file before and after processing.",
+  "main": "index.js",
   "bin": {
     "css-size": "dist/cli.js"
+  },
+  "engines": {
+    "node": ">=4"
   },
   "scripts": {
     "pretest": "eslint src",
     "prepublish": "del-cli dist && BABEL_ENV=publish babel src --out-dir dist --ignore /__tests__/",
-    "test": "npm run prepublish && ava src/__tests__",
-    "test-012": "npm run prepublish && ava src/__tests__"
+    "test": "npm run prepublish && ava src/__tests__"
   },
   "files": [
     "LICENSE-MIT",
+    "index.js",
     "dist",
     "usage.txt"
   ],
@@ -21,6 +24,7 @@
     "bytes",
     "css",
     "gzip",
+    "brotli",
     "size"
   ],
   "license": "MIT",
@@ -47,6 +51,7 @@
   },
   "repository": "ben-eb/css-size",
   "dependencies": {
+    "brotli-size": "0.0.1",
     "cli-table": "^0.3.1",
     "cssnano": "^3.3.2",
     "gzip-size": "^3.0.0",
