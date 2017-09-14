@@ -5,7 +5,7 @@ declare function cssSize(
   css: string,
   options: cssSize.ProcessOptions,
   processor?: cssSize.Processor
-): Promise<cssSize.Result>;
+): Promise<cssSize.Result<string>>;
 
 declare namespace cssSize {
   function table(
@@ -13,6 +13,13 @@ declare namespace cssSize {
     options: ProcessOptions,
     processor?: Processor
   ): Promise<string>;
+
+  function numeric(
+    css: string,
+    options: ProcessOptions,
+    processor?: Processor
+  ): Promise<Result<number>>;
+
   interface HasCss {
     css: string;
   }
@@ -24,19 +31,19 @@ declare namespace cssSize {
   /**
    * The size before and after, the absolute different and the percent improvement.
    */
-  interface SizeInfo {
-    original: string;
-    processed: string;
-    difference: string;
-    percent: string;
+  interface SizeInfo<T extends string | number> {
+    original: T;
+    processed: T;
+    difference: T;
+    percent: T;
   }
 
   /**
    *  Size deltas of the css in various formats.
    */
-  interface Result {
-    uncompressed: SizeInfo;
-    gzip: SizeInfo;
-    brotli: SizeInfo;
+  interface Result<T extends string | number> {
+    uncompressed: SizeInfo<T>;
+    gzip: SizeInfo<T>;
+    brotli: SizeInfo<T>;
   }
 }

@@ -3,7 +3,7 @@ import {spawn} from 'child_process';
 import path from 'path';
 import colors from 'colors/safe';
 import test from 'ava';
-import size, {table} from '../';
+import size, {table, numeric} from '../';
 
 let noopProcessorPath = path.resolve(__dirname, '../../processors/noop.js');
 
@@ -87,6 +87,31 @@ test('table', t => {
 ├────────────┼──────────────┼────────┼────────┤
 │ Percent    │ 60.87%       │ 79.07% │ 59.26% │
 └────────────┴──────────────┴────────┴────────┘`.trim());
+    });
+});
+
+test('numeric', t => {
+    return numeric(read('test.css', 'utf-8')).then(result => {
+        t.deepEqual(result, {
+            uncompressed: {
+                original: 23,
+                processed: 14,
+                difference: 9,
+                percent: 0.6087,
+            },
+            gzip: {
+                original: 43,
+                processed: 34,
+                difference: 9,
+                percent: 0.7907,
+            },
+            brotli: {
+                original: 27,
+                processed: 16,
+                difference: 11,
+                percent: 0.5926,
+            },
+        });
     });
 });
 
