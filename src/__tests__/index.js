@@ -1,8 +1,9 @@
 import {readFileSync as read} from 'fs';
 import {spawn} from 'child_process';
 import path from 'path';
+import colors from 'colors/safe';
 import test from 'ava';
-import size from '../';
+import size, {table} from '../';
 
 let noopProcessorPath = path.resolve(__dirname, '../../processors/noop.js');
 
@@ -69,6 +70,23 @@ test('api', t => {
                 percent: '59.26%',
             },
         });
+    });
+});
+
+test('table', t => {
+    return table(read('test.css', 'utf-8')).then(result => {
+        t.deepEqual(colors.stripColors(result), `
+┌────────────┬──────────────┬────────┬────────┐
+│            │ Uncompressed │ Gzip   │ Brotli │
+├────────────┼──────────────┼────────┼────────┤
+│ Original   │ 23 B         │ 43 B   │ 27 B   │
+├────────────┼──────────────┼────────┼────────┤
+│ Processed  │ 14 B         │ 34 B   │ 16 B   │
+├────────────┼──────────────┼────────┼────────┤
+│ Difference │ 9 B          │ 9 B    │ 11 B   │
+├────────────┼──────────────┼────────┼────────┤
+│ Percent    │ 60.87%       │ 79.07% │ 59.26% │
+└────────────┴──────────────┴────────┴────────┘`.trim());
     });
 });
 
